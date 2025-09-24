@@ -1,5 +1,9 @@
-name: Build Android APK (Capacitor)
-
+      - name: Install Capacitor Android and sync
+        run: |
+          npm i @capacitor/android@^6 --no-audit --no-fund
+          npx cap add android
+          npx cap sync android
+        
 on:
   workflow_dispatch: {}
   push:
