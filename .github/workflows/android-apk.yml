@@ -48,6 +48,25 @@ jobs:
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
+          # Unique name per run to avoid 409 conflict
+          name: app-debug-${{ github.run_number }}
+          # Match any debug APK produced
+          path: android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Ensure gradlew executable
+        run: chmod +x android/gradlew
+
+      - name: Build debug APK
+        working-directory: android
+        run: ./gradlew --no-daemon assembleDebug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
           name: app-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
       - name: Setup Java
